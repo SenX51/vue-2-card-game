@@ -10,15 +10,8 @@
         <p>{{  card.cost }}</p>
       </div>
       <div class="card__image center-horizontal">
-        <img class="card__image-img"
-          src='../../assets/cards/background.png'
-          draggable="false"
-        />
-        <img v-if="card.image"
-          class="card__image-img"
-          :src="card.image"
-          draggable="false"
-        />
+        <img src='../../assets/cards/background.png' draggable="false"/>
+        <img v-if="card.image" :src="card.image" draggable="false"/>
       </div>
       <div class="card__info">
         <div class="card__title">
@@ -157,7 +150,7 @@ export default {
     margin-top: 10px;
     border-radius: 15px;
 
-    &-img {
+    img {
       height: 100%;
       width: 100%;
       border-radius: 15px;
@@ -194,7 +187,6 @@ export default {
     border: 2px solid rgb(26, 25, 25);
     border-radius: 15px;
     padding: 5px;
-
 
     font-size: 14px;
     color: rgb(234, 236, 236);

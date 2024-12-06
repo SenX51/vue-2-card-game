@@ -1,5 +1,6 @@
 import modals from './modals'
 import deck from './deck'
+import battle from './battle'
 
 export default {
   namespaced: true,
@@ -9,5 +10,6 @@ export default {
   modules: {
     modals,
     deck,
+    battle,
   }
 }

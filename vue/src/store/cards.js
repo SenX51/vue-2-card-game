@@ -9,6 +9,7 @@ export default {
         image: require("@/assets/cards/Archer_Charged_Shot.png"),
         cost: 1,
         rarity: 1,
+        targeted: true,
         effects: [
           {
             type: cardEffect.ATTACK,
@@ -21,6 +22,7 @@ export default {
         image: require("@/assets/cards/Mage_Explode.png"),
         cost: 0,
         rarity: 1,
+        targeted: false,
         effects: [
           {
             type: cardEffect.DEFEND,
@@ -33,6 +35,7 @@ export default {
         image: require("@/assets/cards/Archer_Back_Up.png"),
         cost: 4,
         rarity: 1,
+        targeted: true,
         effects: [
           {
             type: cardEffect.ATTACK,
@@ -49,6 +52,7 @@ export default {
         image: require("@/assets/cards/Archer_Rapid_Fire.png"),
         cost: 14,
         rarity: 1,
+        targeted: true,
         effects: [
           {
             type: cardEffect.ATTACK,
@@ -61,6 +65,7 @@ export default {
         image: "",
         cost: 0,
         rarity: 0,
+        targeted: true,
         effects: [
           {
             type: cardEffect.ATTACK,

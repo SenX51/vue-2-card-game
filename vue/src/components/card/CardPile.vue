@@ -25,14 +25,10 @@
 
 <script>
 import CardComponent from './CardComponent.vue';
-import Vue from 'vue';
 
 export default {
   components: {
     CardComponent,
-  },
-  props: {
-    bus: Vue,
   },
   data() {
     return {
@@ -43,8 +39,8 @@ export default {
     };
   },
   mounted() {
-    this.bus.$on('setPile', (cards) => this.setCardList(cards));
-    this.bus.$on('showPile', () => this.show());
+    this.$root.$on('setPile', (cards) => this.setCardList(cards));
+    this.$root.$on('showPile', () => this.show());
   },
   computed: {
     getScaling() {
@@ -119,6 +115,8 @@ export default {
   border: 3px solid #353434;
   border-radius: 15px;;
   background: #3b3b3bf3;
+  justify-items: normal;
+  z-index: 5;
 
   &__wrapper {
     position: fixed;
@@ -133,11 +131,11 @@ export default {
   &__container {
     display: grid;
     padding: 15px;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
     height: 95%;
     right: 1%;
     left: 1%;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
     border-radius: 10px;
     overflow-y: scroll;
     background: #72727259;

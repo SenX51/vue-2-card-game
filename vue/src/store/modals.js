@@ -1,7 +1,4 @@
-export const randomInteger = (min, max) => {
-  const rand = min + Math.random() * (max - min);
-  return Math.round(rand);
-}
+import { randomInteger } from "@/components/common/helpers";
 
 export const genHash = (length = 32) => {
   let hash = "";
