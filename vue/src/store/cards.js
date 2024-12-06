@@ -20,7 +20,7 @@ export default {
       {
         title: "Defend",
         image: require("@/assets/cards/Mage_Explode.png"),
-        cost: 0,
+        cost: 1,
         rarity: 1,
         targeted: false,
         effects: [
@@ -33,13 +33,13 @@ export default {
       {
         title: "Riposte",
         image: require("@/assets/cards/Archer_Back_Up.png"),
-        cost: 4,
+        cost: 2,
         rarity: 1,
         targeted: true,
         effects: [
           {
             type: cardEffect.ATTACK,
-            values: [4],
+            values: [6],
           },
           {
             type: cardEffect.DEFEND,
@@ -50,13 +50,30 @@ export default {
       {
         title: "Fury Swipes",
         image: require("@/assets/cards/Archer_Rapid_Fire.png"),
-        cost: 14,
+        cost: 1,
         rarity: 1,
         targeted: true,
         effects: [
           {
             type: cardEffect.ATTACK,
-            values: [1, 4],
+            values: [1, 5],
+          },
+        ],
+      },
+      {
+        title: "Combat Roll",
+        image: require("@/assets/cards/Archer_Explosive_Arrow.png"),
+        cost: 0,
+        rarity: 1,
+        targeted: false,
+        effects: [
+          {
+            type: cardEffect.DISCARDRANDOM,
+            values: [1],
+          },
+          {
+            type: cardEffect.DRAW,
+            values: [2],
           },
         ],
       },

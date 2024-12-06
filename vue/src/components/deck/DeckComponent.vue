@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import CardComponent from '../card/CardComponent.vue';
 
 export default {
@@ -27,12 +27,21 @@ export default {
     return {
       hoveredIndex: null,
       selectedIndex: null,
-      selectedCard: Object,
+      selectedCard: null,
       sfx: new Audio(require('../../assets/sounds/card/tap.mp3')),
     };
   },
   mounted() {
     this.sfx.volume = 0.1;
+
+    this.$root.$on('playCard', payload => {
+      this.playCard(payload.cardIndex);
+    });
+
+    this.$root.$on('selectCard', (card, index) => {
+      this.selectedCard = card,
+      this.selectedIndex = index;
+    });
   },
   computed: {
     ...mapGetters("deck", ["getHand"]),
@@ -50,10 +59,10 @@ export default {
     },
   },
   methods: {
+    ...mapActions("deck", ["playCard"]),
+
     handleCardClick(card, index) {
-      this.selectedCard = card;
-      this.selectedIndex = index;
-      console.log("Handling Card Click", card);
+      this.$root.$emit("selectCard", card, index);
     },
 
     handleMouseOver(isHovered, index) {
@@ -105,16 +114,13 @@ export default {
   width: 1100px;
   padding-left: 120px;
   padding-right: 10px;
-
   display: flex;
   flex-direction: row;
   align-items: start;
-  background-color: pink;
 
   &__wrapper {
     height: fit-content;
     width: fit-content;
-
     padding-top: 35px;
     overflow: hidden;
   }

@@ -126,6 +126,7 @@ export default {
     width: 100vw;
     background: #22222281;
     backdrop-filter: blur(10px);
+    z-index: 100;
   }
 
   &__container {

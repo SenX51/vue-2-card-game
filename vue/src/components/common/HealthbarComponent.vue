@@ -5,7 +5,9 @@
         :style="{ '--health': `${healthPercent}%` }">
       </div>
       <div class="healthbar__shield"
-        :style="{ '--shield': `${shieldPercent}%` }">
+        :style="{ '--shield': `${shieldPercent}%` }"
+      >
+        <p v-if="shield>0"> {{ shield }}</p>
       </div>
   </div>
 </template>
@@ -65,6 +67,16 @@ export default {
     width: var(--shield);
     border-radius: 20px;
     background: rgba(0, 247, 255, 0.678);
+
+    P {
+      position: absolute;
+      color:#054047;
+      left: 5px;
+      top: -3px;
+      z-index: 1;
+      font-size: 17px;
+      font-weight: bold;
+      text-shadow: #1eebfa 0px 1px 1px;    }
   }
 }
 </style>

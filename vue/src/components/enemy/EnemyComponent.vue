@@ -4,14 +4,14 @@
   >
     <div class="enemy__intent">
       <img class="enemy__sprite"
-        :src="enemy.currentPattern[0].type"
+        :src="enemy.intent.type"
       />
-      <p>{{ enemy.currentPattern[0].values[0] }}</p>
-      <p v-if="enemy.currentPattern[0].type == actions.ATTACK_MULTIPLE">
-        x{{ enemy.currentPattern[0].values[1] }}
+      <p>{{ enemy.intent.values[0] }}</p>
+      <p v-if="enemy.intent.type == actions.ATTACK_MULTIPLE">
+        x{{ enemy.intent.values[1] }}
       </p>
-      <p v-if="enemy.currentPattern[0].type == actions.ATTACK_AND_DEFEND">
-        /{{ enemy.currentPattern[0].values[1] }}
+      <p v-if="enemy.intent.type == actions.ATTACK_AND_DEFEND">
+        /{{ enemy.intent.values[1] }}
       </p>
     </div>
     <div class="enemy__image">
@@ -49,7 +49,6 @@ export default {
 .enemy {
   height: 400px;
   margin-left: 10px;
-  background: #0000002f;
 
   &__intent {
     display: flex;
@@ -71,7 +70,6 @@ export default {
   &__image {
     height: 85%;
     width: fit-content;
-    background: rgba(255, 0, 0, 0.199);
 
     img {
       height: 100%;
