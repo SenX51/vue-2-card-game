@@ -35,7 +35,7 @@
           {{ getMana.current }}/{{ getMana.max}}
         </p>
       </div>
-      <DeckComponent />
+      <DeckComponent @hook:mounted="startEncounter"/>
       <div class="end-turn__button center-vertical center-horizontal"
         @click="() => onEndTurnButton()"
       >
@@ -75,6 +75,7 @@ export default {
       actionBuffer: [],
       processingBuffer: false,
       tickTimer: 450,
+      deckMounted: false,
       sfx: {
         hit: new Audio(require('../../assets/sounds/hit.wav')),
         block: new Audio(require('../../assets/sounds/block.wav')),
@@ -119,7 +120,7 @@ export default {
       this.$root.$emit("playerDied")
     }
   },
-  mounted() {
+  beforeMount() {
     this.$root.$on('selectCard', (card, index) => {
       this.selectedCard = card,
       this.selectedCardIndex = index;
@@ -128,7 +129,10 @@ export default {
     Object.keys(this.sfx).forEach(sound => 
       this.sfx[sound].volume = 0.2,
     );
-    this.startEncounter();
+
+    if (this.deckMounted) {
+      this.startEncounter()
+    }
   },
   methods: {
     ...mapActions("battle", [
@@ -170,7 +174,6 @@ export default {
       this.$root.$emit('setPile', pile);
       this.$root.$emit('showPile');
     },
-
     
     async processBuffer() {
       this.processingBuffer = true;
@@ -335,6 +338,7 @@ export default {
       shuffle = shuffleArray(shuffle);
       this.setDrawPile(shuffleArray(shuffle));
       this.drawCards(this.drawAmount)
+      console.log("drawn");
     },
   }
 }
