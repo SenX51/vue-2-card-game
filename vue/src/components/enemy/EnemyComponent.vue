@@ -2,20 +2,20 @@
   <div class="enemy center-horizontal center-vertical noselect"
     @click="() => onEnemyClick()"
   >
-    <div class="enemy__intent">
-      <img class="enemy__sprite"
+    <div class="enemy-intent">
+      <img class="enemy-intent__sprite"
         :src="enemy.intent.type"
       />
-      <p>{{ enemy.intent.values[0] }}</p>
-      <p v-if="enemy.intent.type == actions.ATTACK_MULTIPLE">
+      <p class="enemy-intent__text">{{ enemy.intent.values[0] }}</p>
+      <p class="enemy-intent__text" v-if="enemy.intent.type == actions.ATTACK_MULTIPLE">
         x{{ enemy.intent.values[1] }}
       </p>
-      <p v-if="enemy.intent.type == actions.ATTACK_AND_DEFEND">
+      <p class="enemy-intent__text" v-if="enemy.intent.type == actions.ATTACK_AND_DEFEND">
         /{{ enemy.intent.values[1] }}
       </p>
     </div>
-    <div class="enemy__image">
-      <img class="enemy_image" :src="enemy.base.image" draggable="false"/>
+    <div class="enemy-image">
+      <img class="enemy-image__sprite" :src="enemy.base.image" draggable="false"/>
     </div>
     <HealthbarComponent :currentHealth="enemy.health" :maxHealth="enemy.base.maxHealth" :shield="enemy.shield"/>
   </div>
@@ -50,7 +50,7 @@ export default {
   height: 400px;
   margin-left: 10px;
 
-  &__intent {
+  &-intent {
     display: flex;
     height: 30px;
     width: fit-content;
@@ -60,18 +60,18 @@ export default {
       height: 100%;
     }
 
-    p {
+    &__text {
       height: 40px;
       font-size: 20px;
       font-weight: bold;
     }
   }
 
-  &__image {
+  &-image {
     height: 85%;
     width: fit-content;
 
-    img {
+    &__sprite {
       height: 100%;
     }
   }

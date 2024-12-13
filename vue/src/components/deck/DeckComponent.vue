@@ -1,17 +1,19 @@
 <template>
   <div class="deck__wrapper center-horizontal">
-    <div class="deck center-horizontal center-vertical"
+    <TransitionGroup name="slide" tag="div"
+      class="deck center-horizontal center-vertical"
       :style="{'--card-spacing': `${getXSpacing}px`}"
+      @after-enter="afterEnter"
     >
       <CardComponent 
         v-for="(card, index) in getHand" 
-        :key="card.id"
+        :key="index"
         :card="card"
         :style="applyTransform(index)"
         @onMouseOver="(isHovered) => handleMouseOver(isHovered, index)"
         @onCardClick="() => handleCardClick(card, index)"
       />
-    </div>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -28,6 +30,7 @@ export default {
       hoveredIndex: null,
       selectedIndex: null,
       selectedCard: null,
+      animated: [],
       sfx: new Audio(require('../../assets/sounds/card/tap.mp3')),
     };
   },
@@ -35,7 +38,16 @@ export default {
     this.sfx.volume = 0.1;
 
     this.$root.$on('playCard', payload => {
+      this.animated.pop();
       this.playCard(payload.cardIndex);
+    });
+
+    this.$root.$on('discardCard', () => {
+      this.animated.pop();
+    });
+
+    this.$root.$on('discardHand', () => {
+      this.animated = [];
     });
 
     this.$root.$on('selectCard', (card, index) => {
@@ -71,7 +83,15 @@ export default {
       this.sfx.play().catch(() => console.log("Can't play sound without user interaction"));
     },
 
+    afterEnter(el) {
+      const index = Array.from(el.parentElement.children).indexOf(el);
+      this.animated.push(index);
+    },
+
     applyTransform(index) {
+      if (!this.animated.includes(index)) {
+        return;
+      }
       const isHovered = this.hoveredIndex == index;
       const isSelected = this.selectedIndex == index;
       if (isHovered || isSelected)
@@ -128,5 +148,12 @@ export default {
   >.card {
     margin-left: var(--card-spacing);
   }
+}
+
+.slide-enter-active, .slide-leave-active {
+  transition: .15s;
+}
+.slide-enter, .slide-leave-active {
+  transform: translate(-500px, 50px) rotate(90deg) scale(0);
 }
 </style>
