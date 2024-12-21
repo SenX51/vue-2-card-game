@@ -57,7 +57,7 @@ export default {
   },
   actions: {
     addCardToDeck: ({ commit }, payload) => {
-      commit("addToDeck", payload);
+      commit("addCardToDeck", payload);
     },
     setDrawPile: ({ commit }, payload) => {
       commit("setDrawPile", payload);

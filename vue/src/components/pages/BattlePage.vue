@@ -35,7 +35,7 @@
           {{ getMana.current }}/{{ getMana.max}}
         </p>
       </div>
-      <DeckComponent @hook:mounted="startEncounter"/>
+      <DeckComponent/>
       <div class="end-turn__button center-vertical center-horizontal"
         @click="() => onEndTurnButton()"
       >
@@ -47,7 +47,9 @@
         <p class="pile__text center-vertical center-horizontal">{{ getDiscardPile.length }}</p>
       </div>
     </div>
-    <CardPile/>
+    <CardPile :type="'pile'"/>
+    <EncounterComponent/>
+    <RewardComponent/>
   </div>
 </template>
 
@@ -60,6 +62,8 @@ import DeckComponent from '../deck/DeckComponent.vue';
 import EnemyComponent from "../enemy/EnemyComponent.vue";
 import PlayerComponent from "../player/PlayerComponent.vue";
 import enemyAction from "../common/enemyAction";
+import EncounterComponent from "../map/EncounterComponent.vue";
+import RewardComponent from "../reward/RewardComponent.vue";
 
 export default {
   components: {
@@ -67,6 +71,8 @@ export default {
     CardPile,
     PlayerComponent,
     EnemyComponent,
+    EncounterComponent,
+    RewardComponent,
   },
   data() {
     return {
@@ -96,6 +102,9 @@ export default {
       "getEnemies",
       "getMana",
     ]),
+    ...mapGetters("encounter", [
+      "getCurrentEncounter",
+    ]),
 
     player() {
       return this.getPlayer;
@@ -112,33 +121,49 @@ export default {
   watch: {
     enemies: function (newVal) {
       if (newVal.length == 0) {
-        this.$root.$emit("victory");
-        this.startEncounter();
+        this.$root.$emit("encounterFinished");
+      } else if (newVal.length < this.getCurrentEncounter.enemies.length) {
+        this.$root.$emit("enemyDied");
       }
     },
     loose: function () {
       this.$root.$emit("playerDied")
     }
   },
-  beforeMount() {
+  mounted() {
+    Object.keys(this.sfx).forEach(sound => 
+      this.sfx[sound].volume = 0.2,
+    );
+
     this.$root.$on('selectCard', (card, index) => {
       this.selectedCard = card,
       this.selectedCardIndex = index;
     });
 
-    Object.keys(this.sfx).forEach(sound => 
-      this.sfx[sound].volume = 0.2,
-    );
+    this.$root.$on('encounterChosen', (encounter) => {
+      this.startEncounter(encounter);
+    });
 
-    if (this.deckMounted) {
-      this.startEncounter()
-    }
+    this.$root.$on('encounterFinished', () => {
+      this.onVictory();
+    });
+
+    this.$root.$on('enemyDied', () => {
+      //this.onEnemyDeath();
+    });
+
+    this.$root.$on('playerDied', () => {
+      this.onLoose();
+    });
+
+    this.$root.$emit("chooseEncounter");
   },
   methods: {
     ...mapActions("battle", [
       "clearEnemies",
       "addEnemyById",
       "applyDamage",
+      "applyHeal",
       "applyShield",
       "setShield",
       "changeMaxMana",
@@ -324,10 +349,18 @@ export default {
       }
     },
 
-    startEncounter() {
-      this.addEnemyById(0);
-      this.addEnemyById(0);
+    onVictory() {
+      this.applyHeal({target: "player", amount: this.getCurrentEncounter.heal});
+    },
 
+    onLoose() {
+      this.$router.push('/');
+      this.$router.go();
+      // location.reload();
+    },
+
+    startEncounter(encounter) {
+      encounter.enemies.forEach(id => this.addEnemyById(id));
       this.enemies.forEach(enemy => {
         this.enemySetIntent(enemy);
       });
@@ -337,8 +370,8 @@ export default {
       let shuffle = structuredClone(this.getDeckIds);
       shuffle = shuffleArray(shuffle);
       this.setDrawPile(shuffleArray(shuffle));
-      this.drawCards(this.drawAmount)
-      console.log("drawn");
+      this.drawCards(this.drawAmount);
+      this.setCurrentMana(this.getMana.max);
     },
   }
 }

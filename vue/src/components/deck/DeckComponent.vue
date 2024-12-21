@@ -35,8 +35,6 @@ export default {
     };
   },
   beforeMount() {
-    console.log("mounted Deck")
-
     this.sfx.volume = 0.1;
 
     this.$root.$on('playCard', payload => {
@@ -88,7 +86,6 @@ export default {
     afterEnter(el) {
       const index = Array.from(el.parentElement.children).indexOf(el);
       this.animated.push(index);
-      console.log("entered");
     },
 
     applyTransform(index) {

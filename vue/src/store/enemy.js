@@ -1,13 +1,15 @@
 import enemyAction from "@/components/common/enemyAction";
+import rarity from "@/components/common/rarity";
 
 export default {
   namespaced: true,
   state: {
     enemies: [
       {
+        id: 0,
         name: "Die Of Doom",
         image: require("../assets/enemies/DieOfDoom.png"),
-        rarity: 3,
+        rarity: rarity.RARE,
         maxHealth: 36,
         actionPatterns: [
           {
@@ -120,7 +122,7 @@ export default {
       {
         name: "",
         image: "",
-        rarity: 0,
+        rarity: rarity.DEFAULT,
         maxHealth: 0,
         actionPatterns: [
           {
@@ -148,7 +150,7 @@ export default {
     ],
   },
   getters: {
-    getEnemies: (state) => state.enemies,
+    getEnemies: (state) => state.enemies.filter((enemy) => enemy.rarity > rarity.DEFAULT),
     getEnemyById: (state) => (id) => state.enemies[id],
   },
 };

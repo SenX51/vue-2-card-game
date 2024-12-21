@@ -86,6 +86,19 @@ export default {
       }
     },
 
+    applyHeal: (state, payload) => {
+      let target = null;
+      if (payload.target == "player") {
+        target = state.player
+      } else {
+        target = state.currentEnemies.find((enemy) => enemy == payload.target);
+      }
+      if (target == null)
+        return;
+      
+      target.health = Math.min(target.health + payload.amount, target.maxHealth);
+    },
+
     applyShield: (state, payload) => {
       let target = null;
       if (payload.target == "player") {
@@ -129,6 +142,9 @@ export default {
     },
     applyDamage: ({ commit }, payload) => {
       commit("applyDamage", payload);
+    },
+    applyHeal: ({commit }, payload) => {
+      commit("applyHeal", payload);
     },
     applyShield: ({ commit }, payload) => {
       commit("applyShield", payload);
